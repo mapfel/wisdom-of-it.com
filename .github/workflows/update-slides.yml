@@ -1,7 +1,7 @@
-name: create-slides
+name: update-slides
 on: [push]
 jobs:
-  process-slides:
+  update-slides:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
