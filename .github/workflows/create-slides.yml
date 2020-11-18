@@ -1,0 +1,48 @@
+name: create-slides
+on: [push]
+jobs:
+  process-slides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Slides
+        run: ./build.sh GenerateSlides
+        shell: bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-artifacts
+          path: output
+          retention-days: 1
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: web-artifacts
+          path: wisdom-of-it
+
+      - name: 'Tar files'
+        run: tar -cvf wisdom-of-it.tar ./wisdom-of-it
+      
+      - name: Copy file via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: 185.183.159.67
+          username: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.USER_PASSWORD }}
+          source: "wisdom-of-it.tar"
+          target: "/var/www/html"
+      
+      - name: Execute remote SSH commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: 185.183.159.67
+          username: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.USER_PASSWORD }}
+          script: |
+            rm -drf /var/www/html/wisdom-of-it
+            tar -xvf /var/www/html/wisdom-of-it.tar -C /var/www/html/wisdom-of-it
+            chown -R www-data:www-data /var/www/html/wisdom-of-it
+            chmod -R 775 /var/www/html/wisdom-of-it
+            chcon -Rt httpd_sys_content_t /var/www/html/wisdom-of-it
