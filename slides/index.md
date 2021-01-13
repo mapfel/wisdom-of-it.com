@@ -31,3 +31,7 @@
 ---
 
 ## Dependency Injection: It decouples your classes construction from the construction of its dependencies.
+
+---
+
+## You don’t have a backup unless you’ve restored your data from it.
