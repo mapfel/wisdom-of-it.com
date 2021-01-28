@@ -35,4 +35,7 @@
 ---
 
 ## You don’t have a backup unless you’ve restored your data from it.
+
+---
+
 ## Henry Ford: "If you always do what you’ve always done, you’ll always get what you’ve always got."
