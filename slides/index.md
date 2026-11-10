@@ -39,3 +39,11 @@
 ---
 
 ## Henry Ford: "If you always do what you’ve always done, you’ll always get what you’ve always got."
+
+---
+
+## Any fool can write code that a computer can understand. Good programmers write code that humans can understand. (Martin Fowler)
+
+---
+
+## Clean code is code that is written by someone who cares. (Michael Feathers)
