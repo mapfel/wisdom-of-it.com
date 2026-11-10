@@ -1,7 +1,9 @@
 name: update-slides
-on: [push]
+on:
+  push:
+  pull_request:
 jobs:
-  update-slides:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +23,12 @@ jobs:
           path: output
           retention-days: 1
 
+  # publishes only what was pushed to develop, which includes completed pull requests
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
