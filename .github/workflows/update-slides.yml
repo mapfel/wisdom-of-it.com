@@ -17,9 +17,8 @@ jobs:
         shell: bash
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: web-artifacts
           path: output
           retention-days: 1
 
@@ -28,34 +27,13 @@ jobs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: web-artifacts
-          path: wisdom-of-it
-
-      - name: 'Tar files'
-        run: tar -cvf wisdom-of-it.tar ./wisdom-of-it
-
-      - name: Copy file via SSH
-        uses: appleboy/scp-action@master
-        with:
-          host: 185.183.159.67
-          username: ${{ secrets.USER_NAME }}
-          password: ${{ secrets.USER_PASSWORD }}
-          source: "wisdom-of-it.tar"
-          target: "/var/www/html"
-
-      - name: Execute remote SSH commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: 185.183.159.67
-          username: ${{ secrets.USER_NAME }}
-          password: ${{ secrets.USER_PASSWORD }}
-          script: |
-            rm -drf /var/www/html/wisdom-of-it
-            tar -xvf /var/www/html/wisdom-of-it.tar -C /var/www/html/
-            chown -R www-data:www-data /var/www/html/wisdom-of-it
-            chmod -R 775 /var/www/html/wisdom-of-it
-
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

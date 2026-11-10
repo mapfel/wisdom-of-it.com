@@ -21,6 +21,11 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
 
 On Windows use `build.cmd` instead of `./build.sh`.
 
+## Publishing
+
+Every push and pull request builds the slides. Pushes to `develop`, which includes completed pull requests,
+are published to GitHub Pages by the [update-slides](.github/workflows/update-slides.yml) workflow.
+
 ## How it is put together
 
 - `src/FsReveal` - the FsReveal library, ported from .NET Framework to .NET 10 and
