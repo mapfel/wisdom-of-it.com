@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{title}</title>
+    <meta name="description" content="{description}">
+    <meta name="author" content="{author}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/{theme}.css" id="theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="dist/plugin/highlight/zenburn.css">
+    <link rel="stylesheet" href="css/fsreveal.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+    <div class="reveal">
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            {slides}
+        </div>
+    </div>
+    <script src="dist/reveal.js"></script>
+    <script src="dist/plugin/highlight.js"></script>
+    <script src="dist/plugin/zoom.js"></script>
+    <script src="dist/plugin/notes.js"></script>
+    <script>
+        // 'default' was the name of the standard transition up to reveal.js 3
+        var transition = '{transition}' === 'default' ? 'slide' : '{transition}';
+
+        // Full list of configuration options available here:
+        // https://revealjs.com/config/
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            hash: true,
+            center: true,
+
+            transition: transition, // none/fade/slide/convex/concave/zoom
+
+            plugins: [RevealHighlight, RevealZoom, RevealNotes]
+        }).then(function () {
+            // the theme's web fonts change the text height, so measure after they are loaded
+            return document.fonts.ready;
+        }).then(function () {
+            // Shrink the text of slides which are higher than the presentation, so nothing gets cut off
+            var maxHeight = Reveal.getConfig().height;
+            Reveal.getSlides().forEach(function (slide) {
+                // slides which are not in view are hidden and need to be shown for measuring
+                var stack = slide.parentElement.tagName === 'SECTION' ? slide.parentElement : slide;
+                var display = [slide.style.display, stack.style.display];
+                slide.style.display = stack.style.display = 'block';
+                for (var size = 95; slide.scrollHeight > maxHeight && size >= 30; size -= 5) {
+                    slide.style.fontSize = size + '%';
+                }
+                slide.style.display = display[0];
+                stack.style.display = display[1];
+            });
+            Reveal.layout();
+        });
+    </script>
+</body>
+</html>

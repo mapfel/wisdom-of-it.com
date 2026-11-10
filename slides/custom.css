@@ -1,0 +1,4 @@
+/* the quotes are written as second level headings, the theme's size is made for short titles */
+.reveal h2 {
+	font-size: 1.5em;
+}
