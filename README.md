@@ -1,31 +1,33 @@
-[![Issue Stats](http://issuestats.com/github/fsprojects/FsReveal/badge/issue)](http://issuestats.com/github/fsprojects/FsReveal)
-[![Issue Stats](http://issuestats.com/github/fsprojects/FsReveal/badge/pr)](http://issuestats.com/github/fsprojects/FsReveal)
+# Wisdom of IT
 
-# FsReveal [![NuGet Status](http://img.shields.io/nuget/v/FsReveal.svg?style=flat)](https://www.nuget.org/packages/FsReveal/)
+Slides for [wisdom-of-it.com](http://wisdom-of-it.com), written in Markdown and turned into a
+[reveal.js][revealjs] presentation by a modernized copy of [FsReveal](https://github.com/fsprojects/FsReveal).
 
-FsReveal allows you to write beautiful slides in [Markdown](http://daringfireball.net/projects/markdown/syntax)
-and brings F# to the [reveal.js][revealjs] web presentation framework.
+## Writing slides
 
-## Features
+The slides live in [slides/index.md](slides/index.md):
 
-- Write your slides in [Markdown](http://daringfireball.net/projects/markdown/syntax) or .fsx files
-- Automatically updates the browser in edit mode on every save
-- Syntax highlighting for most programming languages including C#, F# and LaTeX
-- Speaker notes; Shows the current slide, next slide, elapsed time and current time
-- Built in themes
-- Horizontal and vertical slides
-- Built in slide transitions using CSS 3D transforms
-- Slide overview
-- Works on mobile browsers. Swipe your way through the presentation.
+- the list at the top sets `title`, `description`, `author`, `theme` and `transition`
+- `***` starts a new horizontal slide, `---` a new vertical slide
+- lines starting with `' ` are speaker notes
+- `slides/custom.css` and `slides/images` are copied next to the generated page
 
-[Examples](http://fsprojects.github.io/FsReveal/index.html#Examples) and a [Getting started guide](http://fsprojects.github.io/FsReveal/getting-started.html) can be found in the docs.
+## Building
+
+Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
+
+    ./build.sh                  # generate, serve on http://localhost:8083 and reload the browser on every save
+    ./build.sh GenerateSlides   # only generate the static page into output/
+
+On Windows use `build.cmd` instead of `./build.sh`.
+
+## How it is put together
+
+- `src/FsReveal` - the FsReveal library, ported from .NET Framework to .NET 10 and
+  [FSharp.Formatting](https://github.com/fsprojects/FSharp.Formatting) 22, Markdown slides only.
+  `template.html` is the page the slides are inserted into.
+- `src/FsReveal.Build` - the [FAKE](https://fake.build) 6 build project with the targets used above.
+  The reveal.js version is set at the top of `Build.fs`; the release is downloaded from the npm registry
+  into `packages/` on the first build.
 
 [revealjs]: https://github.com/hakimel/reveal.js/ "reveal.js | HTML presentations made easy"
-
-### Maintainer(s)
-
-- [@kimsk](https://github.com/kimsk)
-- [@forki](https://github.com/forki)
-- [@troykershaw](https://github.com/troykershaw)
-
-The default maintainer account for projects under "fsprojects" is [@fsprojectsgit](https://github.com/fsprojectsgit) - F# Community Project Incubation Space (repo management)

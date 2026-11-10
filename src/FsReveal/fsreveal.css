@@ -1,0 +1,9 @@
+.reveal pre code {
+	font-family: 'Droid Sans Mono', consolas, monospace;
+	word-wrap: break-word;
+	max-height: none;
+}
+
+.reveal pre {
+	box-shadow: none;
+}
